@@ -1,0 +1,967 @@
+<!doctype html>
+<html>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="socket.io/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+
+<!DOCTYPE html>
+
+<script>
+
+    //url pour les test
+    var url = 'http://127.0.0.1:8080'
+    // var url = "http://192.168.1.81:8080/"
+    // var url = 'https://3b8f-90-93-85-175.ngrok-free.app'
+    var socket = io.connect(url);
+
+    //a la connexion, on envoie le cookie si il existe et on le test
+    socket.on('connect', function () {
+        if (!document.cookie) {
+            window.location = "index.html";
+        }
+        else {
+            socket.emit('cookie', document.cookie);
+        }
+    });
+    socket.on('connexion', function (message) {
+        var connexion = message.split(';');
+        if (connexion[0] == 'ok') {//si on valide le cookie
+            document.cookie = connexion[1]; //on le mets à jour
+
+        }
+        else {
+            window.location = "index.html"; //sinon on part
+        }
+    });
+    socket.on('ko_cookie', function () {//si pas bon vookie, on part
+        window.location = "index.html";
+    })
+
+
+</script>
+
+<html>
+
+<head>
+    <title> Page de chat </title>
+    <meta charset="utf-8" />
+    <style>
+        :root {
+            --primary-color: #0caade;
+            --secondary-color: #b3d9ff;
+            --text-color: #333;
+            --title-color: rgb(0, 0, 0);
+            --background-color: #f2f2f2;
+            --background2-color: #ddd8d8;
+            --background3-color: #ffffff;
+        }
+
+        body {
+            background-color: var(--background3-color);
+            font-family: "FreeMono", sans-serif;
+
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: var(--background-color);
+            border-radius: 5px;
+            height: 100vh;
+            border: 1px solid var(--background2-color);
+
+        }
+
+        /*style pour barre a gauche*/
+        .sidebar {
+            flex: 1;
+            max-width: 200px;
+            margin-right: 20px;
+            overflow-y: auto;
+
+        }
+
+        .sidebar h2 {
+            margin-top: 0;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        .salons {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .salons li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .salons li a {
+            display: block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: var(--background2-color);
+            color: var(--text-color);
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .salons li a:hover {
+            background-color: var(--secondary-color);
+        }
+
+        #button_add_salon {
+
+            background-color: var(--primary-color);
+            position: fixed;
+            bottom: 20px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+
+        }
+
+        #button_add_salon:hover {
+            background-color: #007099;
+        }
+
+        dialog {
+            width: 300px;
+            padding: 20px;
+            background-color: #f2f2f2;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input[type="text"],
+        select {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #boutonadd {
+            display: block;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #boutonadd:hover {
+            background-color: #218838;
+        }
+
+        #boutoleave {
+            display: block;
+            background-color: #5f5f5f;
+            color: #fff;
+            border: none;
+            font-size: 15px;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #boutoleave:hover {
+            background-color: #c94646;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: var(--background-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        }
+
+        .message .name {
+            font-weight: bold;
+            margin-right: 10px;
+            color: var(--title-color);
+
+        }
+
+        .user-image {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .message .text {
+            font-size: 16px;
+            line-height: 1.4;
+            color: var(--text-color);
+
+        }
+
+        /* style pour message */
+        .messages {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .messages h2 {
+            margin-top: 0;
+            text-align: center;
+            color: var(--title-color);
+        }
+
+        .message-container {
+            flex: 1;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: var(--background3-color);
+            overflow-y: scroll;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--primary-color);
+        }
+
+        .message-container p {
+            margin: 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        form input[type="text"] {
+            flex: 1;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid var(--background-color);
+            margin-right: 10px;
+        }
+
+        .heure {
+            font-size: 12px;
+            color: gray;
+            float: right;
+        }
+
+        #chat-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        form button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        form button:hover {
+            background-color: #007099;
+        }
+
+        /*style pour barre a droite*/
+        #message-input {
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            background-color: var(--background2-color);
+            color: var(--text-color);
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background-color 0.2s ease;
+        }
+
+        #message-input::placeholder {
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        #message-input:focus {
+            outline: none;
+            background-color: var(--background3-color);
+        }
+
+        .users {
+            margin-bottom: 20px;
+            align-items: flex-start;
+            overflow-y: auto;
+        }
+
+        .users h2 {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--title-color);
+        }
+
+        .user-list {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+
+        #image-user {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+
+        }
+
+        #button_connect {
+            background-color: #38b249;
+            border-radius: 5px;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            width: 200px;
+
+        }
+
+        #button_connect:hover {
+            background-color: #32913d;
+        }
+
+        #button_no_connect {
+            background-color: #d8d8d8;
+            border-radius: 5px;
+            color: rgb(0, 0, 0);
+            border: none;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            width: 200px;
+
+        }
+
+        #button_no_connect:hover {
+            background-color: #c94646;
+        }
+
+        #btnDeconnexion {
+            background-color: red;
+            color: #fff;
+            text-align: center;
+
+            margin-bottom: 10px;
+            border: none;
+
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        #btnDeconnexion:hover {
+            background-color: #9e3131;
+        }
+
+        /* mobiles */
+        @media (max-width: 768px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .messages {
+                margin-top: 10px;
+            }
+
+            .message-container {
+                padding: 5px;
+            }
+
+            #message-input {
+                padding: 5px;
+                font-size: 14px;
+            }
+
+            form button {
+                padding: 5px 8px;
+                font-size: 14px;
+            }
+
+            .users {
+                margin-bottom: 10px;
+            }
+
+            .users h2 {
+                font-size: 16px;
+                margin-bottom: 5px;
+            }
+
+            #button_connect,
+            #button_no_connect {
+                padding: 8px;
+                margin-bottom: 5px;
+                width: 150px;
+            }
+
+            #btnDeconnexion {
+                padding: 8px;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebar">
+
+
+            <h2>Salons de discussion</h2>
+            <ul class="salons" id="salons">
+                <!-- Les salons sont  ici ---->
+
+            </ul>
+            <button id="button_add_salon" type="button">+ Ajouter salon</button>
+
+        </div>
+        <div class="messages">
+            <h2 id="titre-salon">Salon de discussion sélectionné</h2>
+            <div class="message-container" id="messages-container">
+                <!-- Les messages sont  ici -->
+            </div>
+
+
+            <form onsubmit="event.preventDefault(); envoie_message();">
+                <input id="message-input" type="text" name="message" placeholder="Votre message" required>
+                <input id="image-input" type="file" accept="image/*">
+                <button onclick="envoie_message()" type="button">Envoyer</button>
+            </form>
+
+        </div>
+        <div class="users">
+            <button id="btnDeconnexion" onclick="deconexion()">Déconnexion</button>
+            <h2>En ligne</h2>
+            <ul class="user-list" , id="liste_user_connected">
+                <br>
+            </ul>
+            <h2>Hors ligne</h2>
+            <ul class="user-list" , id="liste_user_not_connected">
+            </ul>
+        </div>
+
+    </div>
+    <script>
+        //var pour lma suite (message, titre, ...)
+        const messagesContainer = document.getElementById("messages-container");
+        titreSalon = document.getElementById("titre-salon");
+        var bloque = false;
+        const salonsContainer = document.getElementById("salons");
+
+        var all_user = []
+
+        var premiereco = true;
+        //creation salon prive
+        function SalonPrive(username) {
+            username = username.split(',')[0]
+            if (username != document.cookie.split(',')[1]) { //si soit même on fait rien
+                var moi = document.cookie.split(',')[1]
+                var autre = username
+                console.log("new_salon", "private_" + moi + "_" + autre + "," + moi + ";" + autre)
+                socket.emit("new_salon", "private_" + moi + "_" + autre + "," + moi + ";" + autre)//on demande la creation
+                // socket.emit("demande_salon", document.cookie.split(',')[1]) //on va dans le nouveau salon
+                // salonsContainer.innerHTML = '';
+                // changerDeSalon("private_" + moi + "_" + autre)
+            }
+        }
+
+
+
+
+        function update_connected_user() { //recupère les user connecte
+            socket.emit('who_connected');
+            socket.on('users_connected', function (message) {
+                const liste = document.getElementById('liste_user_connected');
+                liste.innerHTML = '';
+
+                Object.keys(message).forEach(user => {//pour chaque user connect
+                    const nouvelElementBtn = document.createElement('button');
+                    nouvelElementBtn.id = "button_connect";
+
+                    const img = document.createElement('img'); //on ajoute info dans liste
+                    img.src = 'photo_profil/avatar' + user.split(',')[1] + '.png'; // Spécifiez le chemin d'accès vers votre image
+                    img.id = "image-user";
+                    img.classList.add('button-icon');
+                    nouvelElementBtn.appendChild(img);
+
+                    const spanText = document.createElement('span');
+                    spanText.textContent = user.split(',')[0];
+                    nouvelElementBtn.appendChild(spanText);
+
+                    if (!all_user.includes(user)) { //si pas dans la liste on l'ajoute
+                        all_user.push(user)
+                    }
+
+                    nouvelElementBtn.addEventListener('click', function () {//ajout btn sur le nom pour deplacer dans la conv liee
+                        SalonPrive(user);
+                    });
+
+                    liste.appendChild(nouvelElementBtn);
+                });
+            });
+        }
+
+
+        update_connected_user()
+        setInterval(update_connected_user, 1000);//on update tt les 1s
+
+        function update_no_connected_user() {
+            //de meme poiur user pas connecte
+            socket.emit('who_not_connected');
+            socket.on('users_not_connected', function (message) {
+                const liste = document.getElementById('liste_user_not_connected');
+                liste.innerHTML = '';
+
+                message.forEach(user => {//pour chaque user
+                    const nouvelElementBtn = document.createElement('button');
+                    nouvelElementBtn.id = "button_no_connect";
+
+                    const img = document.createElement('img'); //on l'affiche
+                    img.src = 'photo_profil/avatar' + user.split(',')[1] + '.png'; // Spécifiez le chemin d'accès vers votre image
+                    img.id = "image-user";
+                    img.classList.add('button-icon');
+                    nouvelElementBtn.appendChild(img);
+
+                    const spanText = document.createElement('span');
+                    spanText.textContent = user.split(',')[0];
+                    nouvelElementBtn.appendChild(spanText);
+
+                    if (!all_user.includes(user)) {
+                        all_user.push(user)
+                    }
+
+                    nouvelElementBtn.addEventListener('click', function () {//ajout btn sur le nom pour deplacer dans la conv liee
+                        SalonPrive(user);
+                    });
+
+                    liste.appendChild(nouvelElementBtn);
+                });
+            });
+        }
+
+        update_no_connected_user()
+        setInterval(update_no_connected_user, 1000);//on update tt les 1s
+
+
+        //pop up de creation salon (nom_salon plus add user)
+        const btnCreationSalon = document.getElementById('button_add_salon'); //on recup le bouton
+        btnCreationSalon.addEventListener('click', creation_popup_salon);//si cliqué
+        function creation_popup_salon() {
+
+            const dialog = document.createElement("dialog"); //apparait dialog
+
+            const input_nom_salon = document.createElement("input"); //input nom
+            input_nom_salon.type = "text";
+            input_nom_salon.placeholder = "Nom du salon";
+
+            const Selected_users = document.createElement("select");//selct user
+            Selected_users.multiple = true;
+
+            all_user.forEach((user) => {
+                const option = document.createElement("option");
+                option.value = user.split(',')[0];
+                option.text = user.split(',')[0];
+                Selected_users.appendChild(option);
+            });
+
+            const validerButton = document.createElement("button");//validation
+            validerButton.textContent = "Créer";
+
+            validerButton.addEventListener("click", () => {
+                const nomSalon = input_nom_salon.value;
+                const users = Array.from(Selected_users.selectedOptions, (option) => option.value);
+
+                creation_salon(nomSalon, users); //on appelle la creation de salon
+
+                dialog.close();
+            });
+
+            dialog.appendChild(input_nom_salon);//on mets tt dans le dialog
+            dialog.appendChild(Selected_users);
+            dialog.appendChild(validerButton);
+
+            document.body.appendChild(dialog);
+            dialog.showModal();//et on l'affiche
+
+            document.addEventListener("keydown", (event) => {//echape pour quitter
+                if (event.key === "Escape") {
+                    dialog.close();
+                }
+            });
+
+
+        }
+
+        //valide la creation de salon er envoie la demande
+        function creation_salon(nomSalon, users) {
+            var moi = document.cookie.split(',')[1]
+            console.log(document.cookie.split(','))
+            var autre = []
+
+            if (nomSalon == "" || nomSalon.includes(',')) {
+                alert("nom de salon vide ou invalide")
+            }
+
+            users.forEach(user => { //test si au moins un autre user selectionné
+                if (user.split != moi) {
+                    autre.push(user)
+                }
+            })
+            if (autre.length < 1) {
+                alert("il faut au moins un autre utilisateur")
+                return
+            }
+
+            socket.emit("new_salon", nomSalon + "," + moi + ";" + autre) //demande socket
+            socket.emit("demande_salon", moi)
+            salonsContainer.innerHTML = '';
+            changerDeSalon(nomSalon)
+        }
+
+
+
+        function JeSuisLa() {//dit si je sui_s present 
+            socket.emit('JeSuisLa', document.cookie.split(',')[1])
+        }
+        JeSuisLa()
+        setInterval(JeSuisLa, 1000);//on update tt les 1s
+
+
+        socket.on("ok_salon", function () {
+            // alert("salon créé")
+        })
+        socket.on("ko_salon", function (message) {
+            // alert(message)
+        })
+
+        socket.on('salon_quitté', function () {//si salon quitté, recharge page pour force suppr affichage ancien salon
+            location.reload()
+        })
+
+
+        //demande les titres des salons et messages du salons actuels
+        socket.emit("demande_salon", document.cookie.split(',')[1] + ",Salon général")
+        socket.on("reponse_salon", function (message) {
+            const data = JSON.parse(message[1].salons)
+
+
+            salonsContainer.innerHTML = '';//on vide la div des salons
+
+            //poir chaque salon du json
+            data.forEach(salon => {
+                addSalon(salon.nom)
+            })
+
+            const plusSalon = document.querySelectorAll(".salons k");//btn manage et add usqer
+            plusSalon.forEach(plus => {
+                plus.addEventListener("click", event => {
+
+                    event.preventDefault();
+                    const nomSalon = event.target.getAttribute('info');
+                    const salon = data.find(salon => salon.nom === nomSalon);
+                    manageSalon(salon.nom);
+                });
+            })
+
+            const moinsSalon = document.querySelectorAll(".salons j");//btn quitter salon
+            moinsSalon.forEach(moins => {
+                moins.addEventListener("click", event => {
+
+                    event.preventDefault();
+                    const nomSalon = event.target.getAttribute('info');
+                    const salon = data.find(salon => salon.nom === nomSalon);
+                    quitterSalon(salon.nom);
+                });
+            })
+
+            const liensSalons = document.querySelectorAll(".salons a");//redirection vers le salon
+            liensSalons.forEach(lien => {
+                lien.addEventListener("click", event => {
+
+                    event.preventDefault();
+                    const nomSalon = event.target.textContent;
+                    const salon = data.find(salon => salon.nom === nomSalon);
+                    changerDeSalon(salon.nom);
+                });
+            });
+            afficherMessages(data[message[0]])
+        })
+
+        function quitterSalon(nom_salon) {//confirmatioin quitter le salon
+            if (confirm("Etes vous certain de vouloir quitter le salon: " + nom_salon + " ?")) {
+                console.log(nom_salon)
+                socket.emit("quitter_salon", document.cookie.split(',')[1] + ',' + nom_salon)
+            }
+        }
+
+        function manageSalon(nom) {//pop pour liste user du salon et quitter salon
+
+            socket.emit("user_of_salon", nom) //on get iser of salon
+            socket.on("user_of_salon", function (message) {
+                const dialog = document.createElement("dialog"); //apparait dialog
+                const titre = document.createElement("h2")
+                titre.textContent = "Membres du salon: " + nom
+
+                const widgetContainer = document.createElement("liste"); //liste user membre
+
+                message.forEach(function (name) {
+                    widgetContainer.textContent = widgetContainer.textContent + ' ' + name;
+                });
+
+                const titre2 = document.createElement('h5')
+                titre2.textContent = "ajouter des membres:"
+
+                const Selected_users = document.createElement("select");//selct user
+                Selected_users.multiple = true;
+
+                all_user.forEach((user) => {
+                    if (!(widgetContainer.textContent.includes(user.split(',')[0]))) {//les users pas dans salons
+                        const option = document.createElement("option");
+                        option.value = user.split(',')[0];
+                        option.text = user.split(',')[0];
+                        Selected_users.appendChild(option);
+                    }
+
+                });
+
+                const validerButton = document.createElement("button");
+                validerButton.textContent = "ajouter";
+
+                validerButton.addEventListener("click", () => {
+                    const users = Array.from(Selected_users.selectedOptions, (option) => option.value);
+
+                    //ajouter ici fonct
+
+                    dialog.close();
+                });
+
+                dialog.appendChild(titre);
+                dialog.appendChild(widgetContainer);//on mets tt dans le dialog
+                if (Selected_users.length > 0) { //si il y a des users a ajouter
+                    dialog.appendChild(titre2);
+                    dialog.appendChild(Selected_users);
+                    dialog.appendChild(validerButton);
+                }
+
+
+                document.body.appendChild(dialog);
+                dialog.showModal();//et on l'affiche
+
+
+                document.addEventListener("keydown", (event) => {//echape pour quitter
+                    if (event.key === "Escape") {
+                        dialog.close();
+                    }
+                });
+            })
+        }
+
+
+        function addSalon(nom) { //ajoute le salon dans la liste sur le cote
+
+            var nouveauSalon = document.createElement("li");  //on ajoute le salon avec son lien
+            var lienSalon = document.createElement("a");
+            lienSalon.setAttribute("href", "#");
+            lienSalon.innerHTML = nom;
+            nouveauSalon.appendChild(lienSalon);
+
+
+
+
+            if (!(nom.includes('private'))) {
+                var boutonAjouter = document.createElement("k");
+                boutonAjouter.setAttribute("info", nom);
+                boutonAjouter.innerHTML = '+';
+                boutonAjouter.id = "boutonadd";
+                nouveauSalon.appendChild(boutonAjouter);
+
+                var boutonQuitter = document.createElement("j");
+                boutonQuitter.setAttribute("info", nom);
+                boutonQuitter.innerHTML = '-';
+                boutonQuitter.id = "boutoleave";
+                nouveauSalon.appendChild(boutonQuitter);
+            }
+
+
+            salonsContainer.appendChild(nouveauSalon);
+        }
+
+        //affiche l'heure (ou le jour) du message
+        function afficherHeure(timestamp) {
+            const messageDate = new Date(timestamp);
+            const aujourdHui = new Date();
+
+            if (messageDate.toDateString() === aujourdHui.toDateString()) {//si aujourd'hui, on affiche l'heure
+                const heure = messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                return heure;
+            } else {//sinon date du jour du message
+                const date = messageDate.toLocaleDateString();
+                return date;
+            }
+        }
+
+        //affiche les message de "l'hisrtorique"
+        function afficherMessages(salon) {
+            const modificiationnomsalon = document.getElementById("titre-salon");
+
+            //on mets le noveau nom
+            modificiationnomsalon.textContent = salon.nom;
+
+            messagesContainer.innerHTML = "";
+            salon.messages.forEach(message => {
+                const imageSrc = "photo_profil/avatar" + message.nomUtilisateur.split(',')[1] + ".png";
+                const divMessage = document.createElement("div");
+                divMessage.classList.add("message");
+                if (message.contenu.indexOf("++IMAGE++") !== -1) {//si image
+                    var message2 = message.contenu.split("++IMAGE++")
+
+                    divMessage.innerHTML = ` 
+                    <img src="${imageSrc}" alt="Image utilisateur" class="user-image">
+                <span class="name">${message.nomUtilisateur.split(',')[0]}</span>
+                <span class="text">${message2[0]}</span>
+               
+                <img src=${message2[1]} id="chat-image">
+                <span class="heure">${afficherHeure(message.heure)}</span>
+                    `;
+                }
+
+                else {//sinon classique
+                    divMessage.innerHTML = `
+                    <img src="${imageSrc}" alt="Image utilisateur" class="user-image">
+                <span class="name">${message.nomUtilisateur.split(',')[0]}</span>
+                <span class="text">${message.contenu}</span>
+                <span class="heure">${afficherHeure(message.heure)}</span>    `;
+                }
+
+
+
+                messagesContainer.appendChild(divMessage);
+            });
+
+            scrollToBottom();
+        }
+
+        //change de salon
+        function changerDeSalon(salon) {
+            socket.emit("changer de salon", { user: document.cookie.split(',')[1], ancienSalon: titreSalon, salon: salon }); //on dit au seveur
+            socket.emit("demande_salon", document.cookie.split(',')[1] + "," + salon) //on recup message nouveau salon
+            titreSalon.textContent = salon;
+        }
+
+        //scrole en bas de la liste des messages
+        function scrollToBottom() {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        const messageInput = document.getElementById("message-input");
+        const sendMessageButton = document.querySelector("form button");
+
+        //envoie le message avec l'user et l'image poitentiel
+        function envoie_message() {
+            const username = document.cookie.split(',')[1];
+            const message = messageInput.value;
+            const imageFile = document.getElementById('image-input').files[0]; // ou image
+
+            // si message vide ou pas image
+            if (!username.trim() || !message.trim() && !imageFile) {
+                alert("Veuillez entrer un message");
+                return;
+            }
+
+            if (imageFile) { //si image
+                const reader = new FileReader(); //on l'ouvre
+                reader.onloadend = function () {
+                    const imaregeData = reader.result; // Données de l'image en base64
+                    const string_envoie = String(message + "++IMAGE++" + imaregeData)
+                    socket.emit("chat message", { user: username, heure: Date.now(), message: string_envoie, salon: titreSalon.textContent }); //on envoie ave ++IMAGE++ (on espere jamais avoir ca dans un message mais chut !)
+                };
+                reader.readAsDataURL(imageFile);//on dit de lire comme b64
+            } else { //si pas image
+                socket.emit("chat message", { user: username, heure: Date.now(), message: message, salon: titreSalon.textContent });
+            }
+
+            // Enleve le texte et l'image
+            messageInput.value = "";
+            document.getElementById('image-input').value = "";
+        };
+
+
+        // si recoit message en live
+        socket.on("chat message", (data) => {
+            const imageSrc = "photo_profil/avatar" + data.user.split(',')[1] + ".png";
+            const divMessage = document.createElement("div");
+            divMessage.classList.add("message");
+            if (data.message.indexOf("++IMAGE++") !== -1) {//si image
+                var message = data.message.split("++IMAGE++")
+                divMessage.innerHTML = `
+                <img src="${imageSrc}" alt="Image utilisateur" class="user-image">
+                <span class="name">${data.user.split(',')[0]}</span>
+                <span class="text">${message[0]}</span>
+                <img src=${message[1]}></span>
+                <span class="heure">${afficherHeure(data.heure)}</span>
+
+    `;
+            }
+            else {//sinon classique
+                divMessage.innerHTML = `
+                <img src="${imageSrc}" alt="Image utilisateur" class="user-image">
+                <span class="name">${data.user.split(',')[0]}</span>
+                <span class="text">${data.message}</span>
+                <span class="heure">${afficherHeure(data.heure)}</span>
+    `;
+            }
+
+            messagesContainer.appendChild(divMessage);
+            scrollToBottom();
+        });
+
+
+        //suppr les cookie et page acceuil
+        function deconexion() {
+            document.cookie = ''
+            window.location = "index.html";
+
+        }
+
+    </script>
+</body>

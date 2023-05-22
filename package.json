@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "eiows": "^4.1.3",
+    "express": "^4.18.2",
+    "socket.io": "2.4"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.7",
+    "utf-8-validate": "^6.0.3"
+  }
+}

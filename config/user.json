@@ -1,0 +1,76 @@
+{
+  "users": [
+    {
+      "username": "nolann",
+      "password": "d74ff0ee8da3b9806b18c877dbf29bbde50b5bd8e4dad7a3a725000feb82e8f1",
+      "image_path": "4",
+      "cookie": "8RPzDQH6H02JdqiQYFzYE4DAqUwQKZhu",
+      "expiration_date": "2023-05-24",
+      "salon": [
+        "Salon général",
+        "Salon des projets"
+      ]
+    },
+    {
+      "username": "jo",
+      "password": "d74ff0ee8da3b9806b18c877dbf29bbde50b5bd8e4dad7a3a725000feb82e8f1",
+      "image_path": "4",
+      "cookie": "RW3U7Pwq3wIxPj7SXrBNSF8ossLoBV8m",
+      "expiration_date": "2023-05-25",
+      "salon": [
+        "Salon général",
+        "Salon des projets",
+        "Salon de test",
+        "private_jo_louis",
+        "test4",
+        "private_jo_test2"
+      ]
+    },
+    {
+      "username": "louis",
+      "password": "d74ff0ee8da3b9806b18c877dbf29bbde50b5bd8e4dad7a3a725000feb82e8f1",
+      "image_path": "3",
+      "cookie": "d4ajds1NerwaaXiGdy66QhomyWYIzzjd",
+      "expiration_date": "2023-05-20",
+      "salon": [
+        "Salon général",
+        "Salon des projets",
+        "Salon de test",
+        "private_jo_louis",
+        "test4"
+      ]
+    },
+    {
+      "username": "test2",
+      "password": "d74ff0ee8da3b9806b18c877dbf29bbde50b5bd8e4dad7a3a725000feb82e8f1",
+      "image_path": "5",
+      "cookie": "w4Koi83QX1Zwgfbf5frRPTk1Fdj3zcbb",
+      "expiration_date": "2023-05-22",
+      "salon": [
+        "Salon général",
+        "private_jo_test2"
+      ]
+    },
+    {
+      "username": "LorDeo",
+      "password": "a3ee9d88c3e0ee59bdc9dfe051e18d2d5d38ac0eda8f804f50226bdef4a78848",
+      "image_path": "4",
+      "cookie": "IEUh2mAUtGpvu6FY5nbAjEPtRFzgKQ7F",
+      "expiration_date": "2023-05-24",
+      "salon": [
+        "Salon général",
+        "test4"
+      ]
+    },
+    {
+      "username": "aaa",
+      "password": "61be55a8e2f6b4e172338bddf184d6dbee29c98853e0a0485ecee7f27b9af0b4",
+      "image_path": "3",
+      "cookie": "50doIARfBRE5NcWOM4U03E78TdFQMqu3",
+      "expiration_date": "2023-05-24",
+      "salon": [
+        "Salon général"
+      ]
+    }
+  ]
+}

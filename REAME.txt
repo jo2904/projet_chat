@@ -1,0 +1,13 @@
+Voici notre projet, pas très prpore, mais qui a le mérite d'exister. 
+
+il y a la creation d'user et l'inscription avec pseudo, mdp et avatar
+la gestion de la connexion est en socket avec cookie maison
+a la creation l'user est ajouté au salon général
+
+il y a des salons (2 users) et public, on peut en creer et ajouter du monde dans un salon auquel on appartient
+pour creer un salon, il y a un bouton, on entre le nom puis selectionne dans la liste les users
+pour un salon "private", il suffit de selectionner les users dans la liste à droite
+
+on peut envoyer un message ou une photo ou les deux
+
+on voit en direct la liste des users connectés et non connectés

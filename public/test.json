@@ -1,0 +1,124 @@
+[
+    {
+        "nom": "Salon général",
+        "messages": [
+            {
+                "nomUtilisateur": "Alice",
+                "contenu": "Bonjour tout le monde !"
+            },
+            {
+                "nomUtilisateur": "Bob",
+                "contenu": "Salut Alice !"
+            },
+            {
+                "nomUtilisateur": "Charlie",
+                "contenu": "Bonjour à tous !"
+            },
+            {
+                "nomUtilisateur": "Jo",
+                "contenu": "Nolann est vraiment trop beau et fort!"
+            },
+            {
+                "nomUtilisateur": "Alice",
+                "contenu": "Bonjour tout le monde !"
+            },
+            {
+                "nomUtilisateur": "Bob",
+                "contenu": "Salut Alice !"
+            },
+            {
+                "nomUtilisateur": "Charlie",
+                "contenu": "Bonjour à tous !"
+            },
+            {
+                "nomUtilisateur": "Jo",
+                "contenu": "Nolann est vraiment trop beau et fort!"
+            },
+            {
+                "nomUtilisateur": "Alice",
+                "contenu": "Bonjour tout le monde !"
+            },
+            {
+                "nomUtilisateur": "Bob",
+                "contenu": "Salut Alice !"
+            },
+            {
+                "nomUtilisateur": "Charlie",
+                "contenu": "Bonjour à tous !"
+            },
+            {
+                "nomUtilisateur": "Jo",
+                "contenu": "Nolann est vraiment trop beau et fort!"
+            },
+            {
+                "nomUtilisateur": "Alice",
+                "contenu": "Bonjour tout le monde !"
+            },
+            {
+                "nomUtilisateur": "Bob",
+                "contenu": "Salut Alice !"
+            },
+            {
+                "nomUtilisateur": "Charlie",
+                "contenu": "Bonjour à tous !"
+            },
+            {
+                "nomUtilisateur": "Jo",
+                "contenu": "Nolann est vraiment trop beau et fort!"
+            },
+            {
+                "nomUtilisateur": "Alice",
+                "contenu": "Bonjour tout le monde !"
+            },
+            {
+                "nomUtilisateur": "Bob",
+                "contenu": "Salut Alice !"
+            },
+            {
+                "nomUtilisateur": "Charlie",
+                "contenu": "Bonjour à tous !"
+            },
+            {
+                "nomUtilisateur": "Jo",
+                "contenu": "Nolann est vraiment trop beau et fort!"
+            },
+            {
+                "nomUtilisateur": "Alice",
+                "contenu": "Bonjour tout le monde !"
+            },
+            {
+                "nomUtilisateur": "Bob",
+                "contenu": "Salut Alice !"
+            },
+            {
+                "nomUtilisateur": "Charlie",
+                "contenu": "Bonjour à tous !"
+            },
+            {
+                "nomUtilisateur": "Jo",
+                "contenu": "Nolann est vraiment trop beau et fort!"
+            },
+            {
+                "nomUtilisateur": "Emma",
+                "contenu": "Oui c est vrai"
+            }
+        ]
+    },
+    {
+        "nom": "Salon des projets",
+        "messages": [
+            {
+                "nomUtilisateur": "Alice",
+                "contenu": "Je viens de commencer un nouveau projet"
+            },
+            {
+                "nomUtilisateur": "Bob",
+                "contenu": "C'est génial, quel est ton projet ?"
+            },
+            {
+                "nomUtilisateur": "Alice",
+                "contenu": "C'est un site web pour une association"
+            }
+        ]
+    }
+]
