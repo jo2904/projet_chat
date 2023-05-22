@@ -4,26 +4,33 @@
       "username": "nolann",
       "password": "d74ff0ee8da3b9806b18c877dbf29bbde50b5bd8e4dad7a3a725000feb82e8f1",
       "image_path": "4",
-      "cookie": "8RPzDQH6H02JdqiQYFzYE4DAqUwQKZhu",
-      "expiration_date": "2023-05-24",
+      "cookie": "rieDIv9HFeuH7dd1xoPAW32WdQ8slvdh",
+      "expiration_date": "2023-05-25",
       "salon": [
         "Salon général",
-        "Salon des projets"
+        "Salon des projets",
+        "private_jo_nolann",
+        "private_nolann_louis",
+        "private_nolann_LorDeo",
+        "private_nolann_aaa",
+        "private_nolann_test2"
       ]
     },
     {
       "username": "jo",
       "password": "d74ff0ee8da3b9806b18c877dbf29bbde50b5bd8e4dad7a3a725000feb82e8f1",
       "image_path": "4",
-      "cookie": "RW3U7Pwq3wIxPj7SXrBNSF8ossLoBV8m",
+      "cookie": "ZrBj6XWx9sXe2oDbTmy4ctRj2OguGBv2",
       "expiration_date": "2023-05-25",
       "salon": [
         "Salon général",
-        "Salon des projets",
         "Salon de test",
         "private_jo_louis",
         "test4",
-        "private_jo_test2"
+        "private_jo_test2",
+        "private_jo_LorDeo",
+        "private_jo_nolann",
+        "private_jo_aaa"
       ]
     },
     {
@@ -37,7 +44,8 @@
         "Salon des projets",
         "Salon de test",
         "private_jo_louis",
-        "test4"
+        "test4",
+        "private_nolann_louis"
       ]
     },
     {
@@ -48,7 +56,8 @@
       "expiration_date": "2023-05-22",
       "salon": [
         "Salon général",
-        "private_jo_test2"
+        "private_jo_test2",
+        "private_nolann_test2"
       ]
     },
     {
@@ -59,7 +68,9 @@
       "expiration_date": "2023-05-24",
       "salon": [
         "Salon général",
-        "test4"
+        "test4",
+        "private_jo_LorDeo",
+        "private_nolann_LorDeo"
       ]
     },
     {
@@ -69,7 +80,9 @@
       "cookie": "50doIARfBRE5NcWOM4U03E78TdFQMqu3",
       "expiration_date": "2023-05-24",
       "salon": [
-        "Salon général"
+        "Salon général",
+        "private_jo_aaa",
+        "private_nolann_aaa"
       ]
     }
   ]

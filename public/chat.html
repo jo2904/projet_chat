@@ -499,11 +499,10 @@
             if (username != document.cookie.split(',')[1]) { //si soit même on fait rien
                 var moi = document.cookie.split(',')[1]
                 var autre = username
-                console.log("new_salon", "private_" + moi + "_" + autre + "," + moi + ";" + autre)
                 socket.emit("new_salon", "private_" + moi + "_" + autre + "," + moi + ";" + autre)//on demande la creation
-                // socket.emit("demande_salon", document.cookie.split(',')[1]) //on va dans le nouveau salon
-                // salonsContainer.innerHTML = '';
-                // changerDeSalon("private_" + moi + "_" + autre)
+                socket.emit("demande_salon", document.cookie.split(',')[1]) //on va dans le nouveau salon
+                salonsContainer.innerHTML = '';
+                changerDeSalon("private_" + moi + "_" + autre)
             }
         }
 
