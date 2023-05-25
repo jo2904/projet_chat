@@ -4,8 +4,8 @@
       "username": "nolann",
       "password": "d74ff0ee8da3b9806b18c877dbf29bbde50b5bd8e4dad7a3a725000feb82e8f1",
       "image_path": "4",
-      "cookie": "rieDIv9HFeuH7dd1xoPAW32WdQ8slvdh",
-      "expiration_date": "2023-05-25",
+      "cookie": "mvSFrpAJX3NROtGBaJXipALZ767Q9lvF",
+      "expiration_date": "2023-05-27",
       "salon": [
         "Salon général",
         "Salon des projets",
@@ -13,15 +13,17 @@
         "private_nolann_louis",
         "private_nolann_LorDeo",
         "private_nolann_aaa",
-        "private_nolann_test2"
+        "private_nolann_test2",
+        "test_salon",
+        "gwrsdgqwse<"
       ]
     },
     {
       "username": "jo",
       "password": "d74ff0ee8da3b9806b18c877dbf29bbde50b5bd8e4dad7a3a725000feb82e8f1",
       "image_path": "4",
-      "cookie": "ZrBj6XWx9sXe2oDbTmy4ctRj2OguGBv2",
-      "expiration_date": "2023-05-25",
+      "cookie": "AhFbylTld49X6W9ps90oM66NDsnhva1g",
+      "expiration_date": "2023-05-27",
       "salon": [
         "Salon général",
         "Salon de test",
@@ -30,7 +32,9 @@
         "private_jo_test2",
         "private_jo_LorDeo",
         "private_jo_nolann",
-        "private_jo_aaa"
+        "private_jo_aaa",
+        "test_salon",
+        "gwrsdgqwse<"
       ]
     },
     {
@@ -45,7 +49,10 @@
         "Salon de test",
         "private_jo_louis",
         "test4",
-        "private_nolann_louis"
+        "private_nolann_louis",
+        "test_salon",
+        "gwrsdgqwse<",
+        "gzrqgqrz"
       ]
     },
     {
@@ -57,7 +64,9 @@
       "salon": [
         "Salon général",
         "private_jo_test2",
-        "private_nolann_test2"
+        "private_nolann_test2",
+        "test_salon",
+        "gzrqgqrz"
       ]
     },
     {

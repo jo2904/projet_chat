@@ -193,7 +193,7 @@
         }
 
         #boutoleave:hover {
-            background-color: #c94646;
+            background-color: #5346c9;
         }
 
         .message {
@@ -652,7 +652,7 @@
                 alert("il faut au moins un autre utilisateur")
                 return
             }
-
+            console.log("ici")
             socket.emit("new_salon", nomSalon + "," + moi + ";" + autre) //demande socket
             socket.emit("demande_salon", moi)
             salonsContainer.innerHTML = '';
